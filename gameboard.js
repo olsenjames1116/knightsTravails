@@ -55,6 +55,29 @@ class Gameboard{
 
             moveChild = moveParent;
         } while(moveParent !== null);
+
+        return shortestPathStack;
+    }
+
+    printShortestPath(shortestPath) {
+        if(shortestPath === 0) {
+            console.log('You are already there! Enter a different end location.')
+        } else {
+            const path = shortestPath.length - 2;
+            let move = 'moves';
+
+            if(path === 1) move = 'move';
+
+            console.log(`You made it in ${path} ${move}! Here's your path:`);
+
+            shortestPath.shift();
+
+            while(shortestPath.length > 0) {
+                const temp = shortestPath.shift();
+
+                console.log(`[${temp}]`);
+            }
+        }
     }
 
     knightMoves (start, end) {
@@ -69,8 +92,10 @@ class Gameboard{
         } else {
             shortestPath = 0;
         }
+
+        this.printShortestPath(shortestPath);
     }
 }
 
 const gameboard = new Gameboard();
-console.log(gameboard.knightMoves([3,3], [4,3]));
+gameboard.knightMoves([3,3], [4,3]);
