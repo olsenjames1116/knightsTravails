@@ -42,10 +42,33 @@ class Gameboard{
         }
     }
 
+    findShortestPath(movesObj, end) {
+        const endString = end.toString();
+        let moveChild = endString;
+        let moveParent;
+        const shortestPathStack = [ endString ];
+
+        do {
+            moveParent = movesObj[ moveChild ];
+
+            shortestPathStack.unshift(moveParent);
+
+            moveChild = moveParent;
+        } while(moveParent !== null);
+    }
+
     knightMoves (start, end) {
         const knight = new Knight(start, end);
 
         const movesObj = this.findMoves(start, end);
+
+        let shortestPath;
+
+        if(movesObj !== 0) {
+            shortestPath = this.findShortestPath(movesObj, end);
+        } else {
+            shortestPath = 0;
+        }
     }
 }
 
