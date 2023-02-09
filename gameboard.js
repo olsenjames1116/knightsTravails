@@ -10,50 +10,42 @@ class Gameboard{
         return true;
     }
 
-    findShortestPath(start, end) {
+    findMoves(start, end) {
         if(this.compareArrays(start, end)) return 0;
 
-        let path = 1;
-        let queue = [];
         const startSpace = new Space(start);
-        let startIndex = 0;
-        let endIndex = startSpace.neighbors.length;
-        const endString = JSON.stringify(end);
-        let space = startSpace;
-        queue.push(startSpace);
-        let compareQueue = JSON.stringify(queue);
+        let queue = [ startSpace ];
+        const visited = new Set();
+        const movesObj = {};
 
-        for(path; compareQueue.indexOf(endString) === -1; path++) {
-            for(let i = startIndex; i < endIndex; i++) {
-                queue = queue.concat(space.neighbors);
-                space = new Space(queue[i + 1]);
-            }
+        while(queue.length > 0) {
+            const temp = queue.shift();
+            const tempString = temp.coordinate.toString();
+        
+            if(Object.keys(movesObj).length === 0) movesObj[ tempString ] = null;
 
-            compareQueue = JSON.stringify(queue);
-            startIndex = endIndex;
-            endIndex = queue.length;
+            visited.add(tempString);
 
+            if(this.compareArrays(temp.coordinate, end)) return movesObj;
 
+            temp.neighbors.forEach((move) => {
+                const moveString = move.toString();
 
+                if(!visited.has(moveString)) {
+                    queue.push(move);
+                    
+                    movesObj[ moveString ] = tempString;
+                }
+            })
 
-
-
-
-            // queue = queue.concat(space.neighbors);
-            // let space = queue[0];
-            // queue = queue.concat(space.neighbors);
-            // if(queue.includes(end)) break;
-            // queue.shift();
-            // queue[0] = new Space(queue[0]);
+            queue[0] = new Space(queue[0]);
         }
-
-        return path;
     }
 
     knightMoves (start, end) {
         const knight = new Knight(start, end);
 
-        return this.findShortestPath(start, end);
+        const movesObj = this.findMoves(start, end);
     }
 }
 
