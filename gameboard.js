@@ -1,4 +1,3 @@
-import Knight from './knight.js';
 import Space from './space.js';
 
 class Gameboard{
@@ -81,8 +80,6 @@ class Gameboard{
     }
 
     knightMoves (start, end) {
-        const knight = new Knight(start, end);
-
         const movesObj = this.findMoves(start, end);
 
         let shortestPath;
