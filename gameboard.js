@@ -10,23 +10,52 @@ class Gameboard{
         return true;
     }
 
-    findShortestPath(space, end) {
-        // if(space.neighbors.contains(end)) return 1;
+    findShortestPath(start, end) {
+        if(this.compareArrays(start, end)) return 0;
 
-        // for(let i = 0; i < space.neighbors; i++) {
-        //     space.neighbors[]
-        // }
+        let path = 1;
+        let queue = [];
+        const startSpace = new Space(start);
+        let startIndex = 0;
+        let endIndex = startSpace.neighbors.length;
+        const endString = JSON.stringify(end);
+        let space = startSpace;
+        queue.push(startSpace);
+        let compareQueue = JSON.stringify(queue);
+
+        for(path; compareQueue.indexOf(endString) === -1; path++) {
+            for(let i = startIndex; i < endIndex; i++) {
+                queue = queue.concat(space.neighbors);
+                space = new Space(queue[i + 1]);
+            }
+
+            compareQueue = JSON.stringify(queue);
+            startIndex = endIndex;
+            endIndex = queue.length;
+
+
+
+
+
+
+
+            // queue = queue.concat(space.neighbors);
+            // let space = queue[0];
+            // queue = queue.concat(space.neighbors);
+            // if(queue.includes(end)) break;
+            // queue.shift();
+            // queue[0] = new Space(queue[0]);
+        }
+
+        return path;
     }
 
     knightMoves (start, end) {
         const knight = new Knight(start, end);
-        const space = new Space([0,0]);
 
-        this.findShortestPath(space, end);
+        return this.findShortestPath(start, end);
     }
 }
 
 const gameboard = new Gameboard();
-gameboard.knightMoves([0,0], [1,2]);
-
-console.log(gameboard.compareArrays([0,5], [0,0]));
+console.log(gameboard.knightMoves([3,3], [4,3]));
